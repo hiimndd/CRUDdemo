@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,42 +10,120 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+<?php
+function loadtext(){
+  $read = file('sinhvien.txt');
+  
+  echo "<tbody>";
+  $name= "";
+  $mssv ="";
+  $ngaysinh = "";
+    foreach ($read as $line) {
+      for($i = 0 ; $i < strlen($line); $i++){
+        echo "<tr>";
+        if($line[$i] === ","){
+          $vitri1 = $i-1 ;
+          echo "<td>";
+          for($i = 0;$i <= $vitri1; $i++ ){
+            $name = $line[$i];
+            echo $name;
+            
+          }
+          echo "</td>";
+          echo "<td>";
+          for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
+            
+            if($line[$i] === ","){
+              $vitri2 = $i ;
+              for($i = $vitri1+2;$i < $vitri2; $i++ ){
+                $mssv = $line[$i];
+                echo $mssv;
+              }
+              echo "</td>";
+              echo "<td>";
+              for($i = $vitri2+2;$i < strlen($line); $i++ ){
+                $ngaysinh = $line[$i];
+                echo $ngaysinh;
+              }
+              echo "</td>";
 
+              
+            }
+            
+              
+        }
+        //echo $line[$i] .", ";
+        
+       
+      }
+      echo "</tr>";
+    }
+  
+  }
+  echo "</tbody>";
+}
+function loadjson(){
+  $name ="";
+  $mssv = "";
+  $ngaysinh = "";
+  $read = file('json.php');
+    foreach ($read as $line) {
+    // echo $line ."<br> ";
+    $arr = json_decode($line, true);
+    echo $arr["hoten"]."<br>";
+    
+    }
+    
+}
+
+
+?>
 <div class="container">
   <h2>Striped Rows</h2>
-  <p>The .table-striped class adds zebra-stripes to a table:</p>
-  <a href="student.php"><button type="button" class="btn btn-default">Thêm</button></a>           
+  
+  <a href="student.php?type=txt"><button type="button" class="btn btn-default">Thêm vào file text</button></a> 
+  <a href="student.php?type=json"><button type="button" class="btn btn-default" name= "json" value="json">Thêm vào file Json</button></a> 
+
+  
+  <p>file text</p>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
+        <th>Họ tên</th>
+        <th>Mã số sinh viên</th>
+        <th>Ngày sinh</th>
         <th><th>
         <th><th>
       </tr>
     </thead>
-    <tbody>
+    <?php
+      loadtext();
+    ?>
+  </table>
+  <p>file json</p>
+  <table class="table table-striped">
+  <thead>
       <tr>
-        <td><input type="text" class="form-control" id="usr"></td>
-        <td><input type="text" class="form-control" id="usr"></td>
-        <td><input type="text" class="form-control" id="usr"></td>
-        <td><button type="button" class="btn btn-primary">Sửa</button></td>
-        <td><button type="button" class="btn btn-default">Xóa</button></td>
+        <th>Họ tên</th>
+        <th>Mã số sinh viên</th>
+        <th>Ngày sinh</th>
+        <th><th>
+        <th><th>
       </tr>
+    </thead>
+  <tbody>
+  <?php 
+            $read = file('json.php');
+            foreach ($read as $line) {
+              $arr = json_decode($line, true);
+               
+            
+            ?>
       <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-        <td><button type="button" class="btn btn-primary">Sửa</button></td>
-        <td><button type="button" class="btn btn-default">Xóa</button></td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-        <td><button type="button" class="btn btn-primary">Sửa</button></td>
-        <td><button type="button" class="btn btn-default">Xóa</button></td>
+        <td><?php echo $arr["hoten"]."<br>"; ?></td>
+        <td><?php echo $arr["mssv"]."<br>"; ?></td>
+        <td><?php echo $arr["ngaysinh"]."<br>"; ?></td>
+        <?php } ?>
       </tr>
     </tbody>
   </table>

@@ -1,3 +1,6 @@
+<?php
+  include 'handing.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,33 +14,46 @@
 <body>
 
 <div class="container">
-  <h2>Vertical (basic) form</h2>
-  <form action="#">
+
+    <?php if($_GET['type'] == "txt"){ ?>
+      <h2><?php echo "Đây là thêm bằng file text" ?> </h2>
+    <?php } ?>
+    <?php if($_GET['type'] == "json"){ ?>
+      <h2><?php echo "Đây là thêm bằng file json" ?> </h2>
+    <?php }?>
+    
+    
+  <form action="#" method="post">
     <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+      <label for="hoten">Họ Tên :</label>
+      <input type="text" class="form-control" id="hoten" placeholder="Họ tên sinh viên" name="hoten">
     </div>
     <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+        <label for="mssv">Mã số sinh viên :</label>
+        <input type="text" class="form-control" id="mssv" placeholder="mã số sinh viên" name="mssv">
       </div>
       <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+        <label for="ngaysinh">Ngày sinh :</label>
+        <input type="date" class="form-control" id="ngaysinh"  name="ngaysinh">
       </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
-      </div>
-    <div class="form-group">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="remember"> Remember me</label>
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default" name="them">Thêm sinh viên</button>
   </form>
+  <?php
+    if(isset($_POST["them"])){
+      if($_GET['type'] == "txt"){
+        filetext();
+        header("location: index.php");
+      }else if($_GET['type'] == "json"){
+        filejson();
+        header("location: index.php");
+      }else{
+        echo "không thể xác định kiểu file!";
+        exit();
+      }
+            
+      
+    }
+  ?>
 </div>
 </body>
 </html>
