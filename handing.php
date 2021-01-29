@@ -58,6 +58,43 @@ function filejson(){
   fwrite($file,json_encode($sinhvien)."\n");
   fclose($file);
 }
+function filexml(){
+  $loadxml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
+    $i = 0;
+    foreach($loadxml->children() as $sv) {
+    $i ++;
+  }
+
+  $xml = new DomDocument();
+  $xml->preserveWhitespace = false;
+  $xml->load('sinhvien.xml');
+  $xpath = new DOMXPath($xml);
+
+  // get node eva, which we will append to
+  $sinhvien = $xpath->query('/sinhvien/ttsv')->item($i-1);
+
+  // create node john
+
+  $ttsv =$xml->createElement("ttsv");
+  $sinhvien->appendChild($ttsv);
+
+  $name =$xml->createElement("hoten",$_POST["hoten"]);
+  $ttsv->appendChild($name);
+
+  $mssv =$xml->createElement("mssv",$_POST["mssv"]);
+  $ttsv->appendChild($mssv);
+
+  $ngaysinh =$xml->createElement("ngaysinh",$_POST["ngaysinh"]);
+  $ttsv->appendChild($ngaysinh);
+
+  // insert john after eva
+  //   "in eva's parent node (=contacts) insert
+  //   john before eva's next node"
+  // this also works if eva would be the last node
+  $sinhvien->parentNode->insertBefore($ttsv, $sinhvien->nextSibling);
+  $xml->save("sinhvien.xml");
+
+}
 
 
 ?>

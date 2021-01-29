@@ -13,7 +13,6 @@
 <?php
 function loadtext(){
   $read = file('sinhvien.txt');
-  
   echo "<tbody>";
   $name= "";
   $mssv ="";
@@ -27,12 +26,10 @@ function loadtext(){
           for($i = 0;$i <= $vitri1; $i++ ){
             $name = $line[$i];
             echo $name;
-            
           }
           echo "</td>";
           echo "<td>";
           for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
-            
             if($line[$i] === ","){
               $vitri2 = $i ;
               for($i = $vitri1+2;$i < $vitri2; $i++ ){
@@ -46,15 +43,8 @@ function loadtext(){
                 echo $ngaysinh;
               }
               echo "</td>";
-
-              
             }
-            
-              
         }
-        //echo $line[$i] .", ";
-        
-       
       }
       echo "</tr>";
     }
@@ -79,11 +69,11 @@ function loadjson(){
 
 ?>
 <div class="container">
-  <h2>Striped Rows</h2>
+  <h2>Danh sách sinh viên</h2>
   
   <a href="student.php?type=txt"><button type="button" class="btn btn-default">Thêm vào file text</button></a> 
-  <a href="student.php?type=json"><button type="button" class="btn btn-default" name= "json" value="json">Thêm vào file Json</button></a> 
-
+  <a href="student.php?type=json"><button type="button" class="btn btn-default">Thêm vào file Json</button></a> 
+  <a href="student.php?type=xml"><button type="button" class="btn btn-default">Thêm vào file xml</button></a>
   
   <p>file text</p>
   <table class="table table-striped">
@@ -123,6 +113,31 @@ function loadjson(){
         <td><?php echo $arr["hoten"]."<br>"; ?></td>
         <td><?php echo $arr["mssv"]."<br>"; ?></td>
         <td><?php echo $arr["ngaysinh"]."<br>"; ?></td>
+        <?php } ?>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>file xml</p>
+  <table class="table table-striped">
+  <thead>
+      <tr>
+        <th>Họ tên</th>
+        <th>Mã số sinh viên</th>
+        <th>Ngày sinh</th>
+        <th><th>
+        <th><th>
+      </tr>
+    </thead>
+  <tbody>
+  <?php 
+           $xml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
+           foreach($xml->children() as $sv) {
+            ?>
+      <tr>
+        <td><?php echo $sv->hoten."<br>"; ?></td>
+        <td><?php echo $sv->mssv."<br>"; ?></td>
+        <td><?php echo $sv->ngaysinh."<br>"; ?></td>
         <?php } ?>
       </tr>
     </tbody>

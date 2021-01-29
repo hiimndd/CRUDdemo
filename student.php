@@ -46,6 +46,9 @@
       }else if($_GET['type'] == "json"){
         filejson();
         header("location: index.php");
+      }elseif($_GET['type'] == "xml"){
+        filexml();
+        header("location: index.php");
       }else{
         echo "không thể xác định kiểu file!";
         exit();
