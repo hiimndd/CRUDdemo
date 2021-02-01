@@ -11,8 +11,8 @@
 </head>
 <body>
 <?php
-function loadtext(){
-  $read = file('sinhvien.txt');
+function loadtext($file){
+  $read = $file;
   echo "<tbody>";
   $name= "";
   $mssv ="";
@@ -71,9 +71,11 @@ function loadjson(){
 <div class="container">
   <h2>Danh sách sinh viên</h2>
   
-  <a href="student.php?type=txt"><button type="button" class="btn btn-default">Thêm vào file text</button></a> 
-  <a href="student.php?type=json"><button type="button" class="btn btn-default">Thêm vào file Json</button></a> 
-  <a href="student.php?type=xml"><button type="button" class="btn btn-default">Thêm vào file xml</button></a>
+  <a href="student.php?type=text"><button type="button" class="btn btn-default" name="bttxt">Thêm vào file text</button></a> 
+  <a href="student.php?type=json"><button type="button" class="btn btn-default " name="btjson">Thêm vào file Json</button></a> 
+  <a href="student.php?type=xml"><button type="button" class="btn btn-default" name="btxml" >Thêm vào file xml</button></a>
+		
+  
   
   <p>file text</p>
   <table class="table table-striped">
@@ -87,7 +89,7 @@ function loadjson(){
       </tr>
     </thead>
     <?php
-      loadtext();
+      loadtext(file('sinhvien.txt'));
     ?>
   </table>
   <p>file json</p>
@@ -103,16 +105,16 @@ function loadjson(){
     </thead>
   <tbody>
   <?php 
-            $read = file('json.php');
-            foreach ($read as $line) {
-              $arr = json_decode($line, true);
-               
-            
+            $getfile = file_get_contents('sinhvien.json');
+            $jsonfile = json_decode($getfile);
+            foreach ($jsonfile->sinhvien as $index => $obj) {
             ?>
       <tr>
-        <td><?php echo $arr["hoten"]."<br>"; ?></td>
-        <td><?php echo $arr["mssv"]."<br>"; ?></td>
-        <td><?php echo $arr["ngaysinh"]."<br>"; ?></td>
+        <td><?php echo $obj->hoten."<br>"; ?></td>
+        <td><?php echo $obj->mssv."<br>"; ?></td>
+        <td><?php echo $obj->ngaysinh."<br>"; ?></td>
+        <td><a href = "edit.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">sửa</button><a> </a><a href = "delete.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">xóa</button></a></td>
+        
         <?php } ?>
       </tr>
     </tbody>
@@ -132,13 +134,19 @@ function loadjson(){
   <tbody>
   <?php 
            $xml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
-           foreach($xml->children() as $sv) {
+           $i = 0;
+           foreach($xml->children() as $sv ) {
+             $i ++;
+             $index = $i -1;
             ?>
+            
       <tr>
         <td><?php echo $sv->hoten."<br>"; ?></td>
         <td><?php echo $sv->mssv."<br>"; ?></td>
         <td><?php echo $sv->ngaysinh."<br>"; ?></td>
+        <td><a href = "editxml.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">sửa</button><a> </a><a href = "delete.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">xóa</button></a></td>
         <?php } ?>
+        
       </tr>
     </tbody>
   </table>

@@ -1,5 +1,6 @@
 <?php
   include 'handing.php';
+  session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +16,17 @@
 
 <div class="container">
 
-    <?php if($_GET['type'] == "txt"){ ?>
-      <h2><?php echo "Đây là thêm bằng file text" ?> </h2>
-    <?php } ?>
-    <?php if($_GET['type'] == "json"){ ?>
-      <h2><?php echo "Đây là thêm bằng file json" ?> </h2>
-    <?php }?>
+    
+    <h2><?php 
+    if($_GET["type"] == "json"){
+      echo "Thêm vào file json";
+    }
+    if($_GET["type"] == "text"){
+      echo "Thêm vào file text";
+    }
+    if($_GET["type"] == "xml"){
+      echo "Thêm vào file xml";
+    } ?> </h2>
     
     
   <form action="#" method="post">
