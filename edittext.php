@@ -12,26 +12,68 @@
 <?php
 $read = file('sinhvien.txt');
 
+$id = (int)$_GET["id"];
 
 if(isset($_POST['luu'])) {
 
-	foreach($products->ttsv as $sv){
-		if($sv['id']==$_POST['id']){
-			$sv->hoten = $_POST['hoten'];
-      $sv->mssv = $_POST['mssv'];
-      $sv->ngaysinh = $_POST['ngaysinh'];
-			break;
-		}
-	}
-	file_put_contents('sinhvien.xml', $products->asXML());
+$myfilew = fopen("sinhvien.txt", "w") or die("Unable to open file!");
+$file = $read;
+$sumid = -1;
+foreach($file as $sv){
+  $sumid ++;
+}
+if($id == 0){
+  $txt = "";
+  if(isset($_POST["hoten"])){
+    
+    $txt = $txt.$_POST["hoten"].", ";
+    
+  }
+  if(isset($_POST["mssv"])){
+    $txt = $txt.$_POST["mssv"].", ";
+    
+  }
+  if(isset($_POST["ngaysinh"])){
+    $txt = $txt.$_POST["ngaysinh"]."\n";
+  }
+  fwrite($myfilew, $txt);
+  fclose($myfilew);
+}else{
+  $head = "";
+  for($i = 0;$i<$id;$i++){
+    $head .= $file[$i];
+  }
+  fwrite($myfilew, $head);
+  fclose($myfilew);
+  $myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
+  
+  $txt = "";
+  if(isset($_POST["hoten"])){
+    
+    $txt = $txt.$_POST["hoten"].", ";
+    
+  }
+  if(isset($_POST["mssv"])){
+    $txt = $txt.$_POST["mssv"].", ";
+    
+  }
+  if(isset($_POST["ngaysinh"])){
+    $txt = $txt.$_POST["ngaysinh"]."\n";
+  }
+  fwrite($myfilea, $txt);
+  fclose($myfilea);
+
+}
+$myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
+$end = "";
+  for($i = $id+1;$i<=$sumid;$i++){
+    $end .= $file[$i]."\n";
+  }
+  fwrite($myfilea, $end);
+  fclose($myfilea);
 	header('location:index.php');
 }
 
-
-
-
-$id = (int)$_GET["id"];
-// unset($read[$id]);
 $hoten = "";
 $mssv = "";
 $ngaysinh = "";
@@ -78,7 +120,7 @@ foreach ($arr as $line) {
     </div>
     <div class="form-group">
         <label for="mssv">Mã số sinh viên :</label>
-        <input type="text" class="form-control" id="mssv" value="<?php echo $mssv ?>" placeholder="mã số sinh viên" name="mssv">
+        <input type="text" class="form-control" id="mssv" value="<?php echo trim($mssv) ?>" placeholder="mã số sinh viên" name="mssv">
       </div>
       <div class="form-group">
         <label for="ngaysinh">Ngày sinh :</label>

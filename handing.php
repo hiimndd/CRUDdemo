@@ -35,7 +35,7 @@ function filetext(){
   $txt = "";
   if(isset($_POST["hoten"])){
     
-    $txt = "\n".$txt.$_POST["hoten"].", ";
+    $txt = $txt.$_POST["hoten"].", ";
     
   }
   if(isset($_POST["mssv"])){
@@ -43,7 +43,7 @@ function filetext(){
     
   }
   if(isset($_POST["ngaysinh"])){
-    $txt = $txt.$_POST["ngaysinh"];
+    $txt = $txt.$_POST["ngaysinh"]."\n";
   }
   echo $txt;
   fwrite($myfile, $txt);

@@ -46,7 +46,7 @@
   </form>
   <?php
     if(isset($_POST["them"])){
-      if($_GET['type'] == "txt"){
+      if($_GET['type'] == "text"){
         filetext();
         header("location: index.php");
       }else if($_GET['type'] == "json"){
