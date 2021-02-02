@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +10,7 @@
 </head>
 <body>
 <?php
-$products = simplexml_load_file('sinhvien.xml');
-
+$read = file('sinhvien.txt');
 
 
 if(isset($_POST['luu'])) {
@@ -31,15 +29,37 @@ if(isset($_POST['luu'])) {
 
 
 
-foreach($products->children() as $sv){
-	if($sv['id']== $_GET['id']){
-		$id = $sv['id'];
-		$hoten = $sv->hoten;
-    $mssv = $sv->mssv;
-    $ngaysinh = $sv->ngaysinh;
-		break;
+
+$id = (int)$_GET["id"];
+// unset($read[$id]);
+$hoten = "";
+$mssv = "";
+$ngaysinh = "";
+$arr = array($read[$id]);
+foreach ($arr as $line) {
+  for($i = 0 ; $i < strlen($line); $i++){
+    if($line[$i] === ","){
+      $vitri1 = $i-1 ;
+      for($i = 0;$i <= $vitri1; $i++ ){
+        $hoten .= $line[$i];
+        
+      }
+      for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
+        if($line[$i] === ","){
+          $vitri2 = $i ;
+          for($i = $vitri1+2;$i < $vitri2; $i++ ){
+            $mssv .= $line[$i];
+          }
+          for($i = $vitri2+2;$i < strlen($line); $i++ ){
+            $ngaysinh .= $line[$i];
+          }
+          
+        }
+    }
   }
 }
+}
+
 
 
 
@@ -62,7 +82,7 @@ foreach($products->children() as $sv){
       </div>
       <div class="form-group">
         <label for="ngaysinh">Ngày sinh :</label>
-        <input type="date" class="form-control" id="ngaysinh"  value="<?php echo $ngaysinh ?>" name="ngaysinh">
+        <input type="date" class="form-control" id="ngaysinh"  value="<?php echo trim($ngaysinh); ?>" name="ngaysinh">
       </div>
     <button type="submit" class="btn btn-default" name="luu">Lưu</button>
   <?php endif; ?>
@@ -72,4 +92,3 @@ foreach($products->children() as $sv){
 </div>
 </body>
 </html>
-

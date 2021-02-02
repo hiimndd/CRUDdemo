@@ -71,32 +71,52 @@ function filejson(){
 }
 function filexml(){
   $loadxml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
-    $i = 0;
+    $i = -1;
     foreach($loadxml->children() as $sv) {
     $i ++;
-  }
+    }
+    foreach($loadxml->children() as $sv) {
+      if($sv["id"] == $i){
+        $i++;
+      }
+       
+    
 
-  $xml = new DomDocument();
-  $xml->preserveWhitespace = false;
-  $xml->load('sinhvien.xml');
-  $xpath = new DOMXPath($xml);
-  $sinhvien = $xpath->query('/sinhvien/ttsv')->item(1);
+    }
+    
+  // echo $sinhvien = $xpath->query('/sinhvien/ttsv[id]')->item($i);
+  // $sv['id'] = $i;
+  // $xml = new DomDocument();
+  // $xml->preserveWhitespace = false;
+  // $xml->load('sinhvien.xml');
+  // $xpath = new DOMXPath($xml);
+  // $sinhvien = $xpath->query('/sinhvien/ttsv')->item($i-1);
 
-  $ttsv =$xml->createElement("ttsv");
-  $sinhvien->appendChild($ttsv);
+  // $ttsv =$xml->createElement("ttsv");
+  // $sinhvien->appendChild($ttsv);
 
-  $name =$xml->createElement("hoten",$_POST["hoten"]);
-  $ttsv->appendChild($name);
+  // $name =$xml->createElement("hoten",$_POST["hoten"]);
+  // $ttsv->appendChild($name);
 
-  $mssv =$xml->createElement("mssv",$_POST["mssv"]);
-  $ttsv->appendChild($mssv);
+  // $mssv =$xml->createElement("mssv",$_POST["mssv"]);
+  // $ttsv->appendChild($mssv);
 
-  $ngaysinh =$xml->createElement("ngaysinh",$_POST["ngaysinh"]);
-  $ttsv->appendChild($ngaysinh);
+  // $ngaysinh =$xml->createElement("ngaysinh",$_POST["ngaysinh"]);
+  // $ttsv->appendChild($ngaysinh);
 
 
-  $sinhvien->parentNode->insertBefore($ttsv, $sinhvien->nextSibling);
-  $xml->save("sinhvien.xml");
+  // $sinhvien->parentNode->insertBefore($ttsv, $sinhvien->nextSibling);
+  // $xml->save("sinhvien.xml");
+
+
+  
+    $products = simplexml_load_file('sinhvien.xml');
+    $product = $products->addChild('ttsv');
+    $product->addAttribute('id',$i);
+    $product->addChild('hoten', $_POST['hoten']);
+    $product->addChild('mssv', $_POST['mssv']);
+    $product->addChild('ngaysinh', $_POST['ngaysinh']);
+    file_put_contents('sinhvien.xml', $products->asXML());
 
 }
 

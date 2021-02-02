@@ -17,6 +17,7 @@ function loadtext($file){
   $name= "";
   $mssv ="";
   $ngaysinh = "";
+  $id = 0;
     foreach ($read as $line) {
       for($i = 0 ; $i < strlen($line); $i++){
         echo "<tr>";
@@ -42,7 +43,14 @@ function loadtext($file){
                 $ngaysinh = $line[$i];
                 echo $ngaysinh;
               }
+              
               echo "</td>";
+              $index = $id ++;
+              echo "<td>";
+              echo "<a href = '"."edittext.php?id=".$index."'><button type='"."button"."' class='"."btn btn-primary"."'>"."sửa"."</button><a> </a>";
+              echo "<a href = '"."deletetext.php?id=".$index."'><button type='"."button"."' class='"."btn btn-primary"."'>"."xóa"."</button><a> </a>";
+
+
             }
         }
       }
@@ -113,7 +121,7 @@ function loadjson(){
         <td><?php echo $obj->hoten."<br>"; ?></td>
         <td><?php echo $obj->mssv."<br>"; ?></td>
         <td><?php echo $obj->ngaysinh."<br>"; ?></td>
-        <td><a href = "edit.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">sửa</button><a> </a><a href = "delete.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">xóa</button></a></td>
+        <td><a href = "editjson.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">sửa</button><a> </a><a href = "deletejson.php?id=<?php echo $index; ?>" onclick="return confirm('Bạn có chắc muốn xóa thông tin này trong file json?')"><button type="button" class="btn btn-primary">xóa</button></a></td>
         
         <?php } ?>
       </tr>
@@ -134,17 +142,16 @@ function loadjson(){
   <tbody>
   <?php 
            $xml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
-           $i = 0;
+           
            foreach($xml->children() as $sv ) {
-             $i ++;
-             $index = $i -1;
+
             ?>
             
       <tr>
         <td><?php echo $sv->hoten."<br>"; ?></td>
         <td><?php echo $sv->mssv."<br>"; ?></td>
         <td><?php echo $sv->ngaysinh."<br>"; ?></td>
-        <td><a href = "editxml.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">sửa</button><a> </a><a href = "delete.php?id=<?php echo $index; ?>"><button type="button" class="btn btn-primary">xóa</button></a></td>
+        <td><a href = "editxml.php?id=<?php echo $sv['id']; ?>"><button type="button" class="btn btn-primary">sửa</button><a> </a><a href = "deletexml.php?id=<?php echo $sv['id']; ?>"  onclick="return confirm('Bạn có chắc muốn xóa thông tin này trong file xml?')"><button type="button" class="btn btn-primary">xóa</button></a></td>
         <?php } ?>
         
       </tr>
