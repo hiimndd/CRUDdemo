@@ -67,7 +67,7 @@ if($id == 0){
 $myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
 $end = "";
   for($i = $id+1;$i<=$sumid;$i++){
-    $end .= $file[$i]."\n";
+    $end .= $file[$i];
   }
   fwrite($myfilea, $end);
   fclose($myfilea);

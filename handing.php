@@ -1,54 +1,61 @@
 <?php
-// class sinhvien {
-//     public $hoten;
-//     public $mssv;
-//     public $ngaysinh;
-//     function __construct($hoten,$mssv,$ngaysinh) {
-//         $this->ngaysinh = $ngaysinh;
-//         $this->mssv = $mssv;
-//         $this->ngaysinh = $ngaysinh
-//       }
-//       function get_hoten() {
-//         return $this->$hoten;
-//       }
-//       function get_mssv() {
-//         return $this->$mssv;
-//       }
-//       function get_ngaysinh() {
-//         return $this->$ngaysinh;
-//       }
+class sinhvien {
+    public $hoten;
+    public $mssv;
+    public $ngaysinh;
+    public $txt = "";
+    function __construct($hoten,$mssv,$ngaysinh) {
+        $this->hoten = $hoten;
+        $this->mssv = $mssv;
+        $this->ngaysinh = $ngaysinh;
+      }
+      public function get_hoten() {
+        return $this->hoten;
+      }
+      public function get_mssv() {
+        return $this->mssv;
+      }
+      public function get_ngaysinh() {
+        return $this->ngaysinh;
+      }
 
       
-// }
-// function hienthi() {
+}
+class filetext extends sinhvien{
+  function loadfiletext(){
+    $myfile = fopen("sinhvien.txt", "a") or die("Unable to open file!");
+      
+      $this->txt .= $this->get_hoten().", ";
+      $this->txt .= $this->get_mssv().", ";
+      $this->txt .= $this->get_ngaysinh()."\n";
+    fwrite($myfile, $this->txt);
+    fclose($myfile);
+    
+  
+  }
+}
 
-//     $myfile = fopen("sinhvien.txt", "r") or die("Unable to open file!");
-
-// while(!feof($myfile)) {
-//   echo fgets($myfile) ;
-// }
-// fclose($myfile);
-// }
 
 function filetext(){
-  $myfile = fopen("sinhvien.txt", "a") or die("Unable to open file!");
-  $txt = "";
-  if(isset($_POST["hoten"])){
+  // $myfile = fopen("sinhvien.txt", "a") or die("Unable to open file!");
+  // $txt = "";
+  // if(isset($_POST["hoten"])){
     
-    $txt = $txt.$_POST["hoten"].", ";
+  //   $txt = $txt.$_POST["hoten"].", ";
     
-  }
-  if(isset($_POST["mssv"])){
-    $txt = $txt.$_POST["mssv"].", ";
+  // }
+  // if(isset($_POST["mssv"])){
+  //   $txt = $txt.$_POST["mssv"].", ";
     
-  }
-  if(isset($_POST["ngaysinh"])){
-    $txt = $txt.$_POST["ngaysinh"]."\n";
-  }
-  echo $txt;
-  fwrite($myfile, $txt);
-  fclose($myfile);
-  
+  // }
+  // if(isset($_POST["ngaysinh"])){
+  //   $txt = $txt.$_POST["ngaysinh"]."\n";
+  // }
+  // echo $txt;
+  // fwrite($myfile, $txt);
+  // fclose($myfile);
+  $move = new filetext($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
+  $move->loadfiletext();
 
 }
 function filejson(){

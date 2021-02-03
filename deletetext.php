@@ -9,6 +9,7 @@ if(isset($_GET['id'])) {
     $fsinhvien = "";
     foreach($read as $sv){
         $fsinhvien .= $sv;
+        echo $fsinhvien;
     }
     
     $myfilew = fopen("sinhvien.txt", "w") or die("Unable to open file!");
