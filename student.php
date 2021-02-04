@@ -48,7 +48,7 @@
     if(isset($_POST["them"])){
       if($_GET['type'] == "text"){
         filetext();
-        header("location: index.php");
+        // header("location: index.php");
       }else if($_GET['type'] == "json"){
         filejson();
         header("location: index.php");
