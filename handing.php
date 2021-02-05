@@ -31,42 +31,47 @@ class filetext extends sinhvien{
     foreach($read as $sv){
       $sumid++;
     }
-    
-    for($i = 0;$i<$sumid;$i++){
-      $mssv="";
-      $arr = array($read[$i]);
-      foreach ($arr as $line) {
-        for($i = 0 ; $i < strlen($line); $i++){
-          if($line[$i] === ","){
-            $vitri1 = $i-1 ;
-            for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
-              if($line[$i] === ","){
-                $vitri2 = $i ;
-                for($i = $vitri1+2;$i < $vitri2; $i++ ){
-                  $mssv .= $line[$i];
-                }
+    for($a = 0;$a < $sumid;$a++){
+    $hoten = "";
+    $mssv = "";
+    $ngaysinh = "";
+    $arr = array($read[$a]);
 
-                if($mssv == $this->get_mssv()){
-                  echo "Trùng mã sinh viên!"; 
-                  return 0;
-                }
-                
+    foreach ($arr as $line) {
+      for($i = 0 ; $i < strlen($line); $i++){
+        if($line[$i] === ","){
+          $vitri1 = $i-1 ;
+          for($i = 0;$i <= $vitri1; $i++ ){
+            $hoten .= $line[$i];
           }
+          for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
+            if($line[$i] === ","){
+              $vitri2 = $i ;
+              for($i = $vitri1+2;$i < $vitri2; $i++ ){
+                $mssv .= $line[$i];
+              }
+              if(trim($mssv) == trim($this->get_mssv())){
+                echo "Trùng mã sinh viên!"; 
+                return 0;
+              }else{
+               break;
+              }
+            }
+              
+            }
         }
       }
-      }
     }
-    
+    }
+  $this->chain .= $this->get_hoten().", ";
+  $this->chain .= $this->get_mssv().", ";
+  $this->chain .= $this->get_ngaysinh()."\n";
+  fwrite($myfile, $this->chain);
+  fclose($myfile);
   }
-  echo "deo trung";
   
-  // $this->chain .= $this->get_hoten().", ";
-  // $this->chain .= $this->get_mssv().", ";
-  // $this->chain .= $this->get_ngaysinh()."\n";
-  // fwrite($myfile, $this->chain);
-  // fclose($myfile);
 }
-}
+
 class filejson extends sinhvien{
   function loaddata(){
     $file = file_get_contents('sinhvien.json');
@@ -81,25 +86,6 @@ class filejson extends sinhvien{
 
 
 function filetext(){
-  // $myfile = fopen("sinhvien.txt", "a") or die("Unable to open file!");
-  // $txt = "";
-  // if(isset($_POST["hoten"])){
-    
-  //   $txt = $txt.$_POST["hoten"].", ";
-    
-  // }
-  // if(isset($_POST["mssv"])){
-  //   $txt = $txt.$_POST["mssv"].", ";
-    
-  // }
-  // if(isset($_POST["ngaysinh"])){
-  //   $txt = $txt.$_POST["ngaysinh"]."\n";
-  // }
-  // echo $txt;
-  // fwrite($myfile, $txt);
-  // fclose($myfile);
-
-
   $move = new filetext($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
   $move->loaddata();
   
