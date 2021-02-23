@@ -45,16 +45,21 @@
     <button type="submit" class="btn btn-default" name="them">Thêm sinh viên</button>
   </form>
   <?php
+  
     if(isset($_POST["them"])){
+      if(empty($_POST["hoten"]) == true or empty($_POST["mssv"]) == true or empty($_POST["ngaysinh"]) == true){
+        echo "Không để trống thông tin sinh viên";
+        return 0;
+      }
       if($_GET['type'] == "text"){
-        filetext();
-        // header("location: index.php");
+        $loadfile = new filetext($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
+        $loadfile->create();
       }else if($_GET['type'] == "json"){
-        filejson();
-        header("location: index.php");
+        $loadfile = new filejson($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
+        $loadfile->create();
       }elseif($_GET['type'] == "xml"){
-        filexml();
-        header("location: index.php");
+        $loadfile = new filexml($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
+        $loadfile->create();
       }else{
         echo "không thể xác định kiểu file!";
         exit();
@@ -62,6 +67,8 @@
             
       
     }
+
+
   ?>
 </div>
 </body>

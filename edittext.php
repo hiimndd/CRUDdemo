@@ -10,7 +10,6 @@
 </head>
 <body>
 <?php
-$read = file('sinhvien.txt');
 
 $id = (int)$_GET["id"];
 

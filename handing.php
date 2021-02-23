@@ -4,7 +4,11 @@ abstract class sinhvien {
     public $mssv;
     public $ngaysinh;
     public $chain ;
-    abstract function loaddata();
+    abstract function create();
+    abstract function display();
+    // abstract function update();
+    // abstract function delete();
+    
     function __construct($hoten,$mssv,$ngaysinh) {
         $this->hoten = $hoten;
         $this->mssv = $mssv;
@@ -23,7 +27,7 @@ abstract class sinhvien {
       
 }
 class filetext extends sinhvien{
-  function loaddata(){
+  function create(){
     $myfile = fopen("sinhvien.txt", "a") or die("Unable to open file!");
     
     $read = file('sinhvien.txt');
@@ -36,7 +40,7 @@ class filetext extends sinhvien{
     $mssv = "";
     $ngaysinh = "";
     $arr = array($read[$a]);
-
+      
     foreach ($arr as $line) {
       for($i = 0 ; $i < strlen($line); $i++){
         if($line[$i] === ","){
@@ -68,97 +72,112 @@ class filetext extends sinhvien{
   $this->chain .= $this->get_ngaysinh()."\n";
   fwrite($myfile, $this->chain);
   fclose($myfile);
+  header("location: index.php");
   }
+  function display(){
+    
   
-}
+      $read = file('sinhvien.txt');
+      echo "<tbody>";
+  $name= "";
+  $mssv ="";
+  $ngaysinh = "";
+  $id = 0;
+    foreach ($read as $line) {
+      for($i = 0 ; $i < strlen($line); $i++){
+        echo "<tr>";
+        if($line[$i] === ","){
+          $vitri1 = $i-1 ;
+          echo "<td>";
+          for($i = 0;$i <= $vitri1; $i++ ){
+            $name = $line[$i];
+            echo $name;
+          }
+          echo "</td>";
+          echo "<td>";
+          for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
+            if($line[$i] === ","){
+              $vitri2 = $i ;
+              for($i = $vitri1+2;$i < $vitri2; $i++ ){
+                $mssv = $line[$i];
+                echo $mssv;
+              }
+              echo "</td>";
+              echo "<td>";
+              for($i = $vitri2+2;$i < strlen($line); $i++ ){
+                $ngaysinh = $line[$i];
+                echo $ngaysinh;
+              }
+              
+              echo "</td>";
+              $index = $id ++;
+              echo "<td>";
+              
+              echo "<a href = '"."edittext.php?id=".$index."'><button type='"."button"."' class='"."btn btn-primary"."'>"."sửa"."</button><a> </a>";
+              echo "<a href = '"."deletetext.php?id=".$index."'><button type='"."button"."' class='"."btn btn-primary"."'>"."xóa"."</button><a> </a>";
 
-class filejson extends sinhvien{
-  function loaddata(){
-    $file = file_get_contents('sinhvien.json');
-    $data = json_decode($file, true);
-    $data["sinhvien"] = array_values($data["sinhvien"]);
-    $sinhvien = array("hoten"=>$_POST["hoten"], "mssv"=>$_POST["mssv"], "ngaysinh"=>$_POST["ngaysinh"]);
-    array_push($data["sinhvien"], $sinhvien);
-    file_put_contents("sinhvien.json", json_encode($data));
-  
-  }
-}
 
-
-function filetext(){
-  $move = new filetext($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
-  $move->loaddata();
-  
-
-}
-function filejson(){
-  // $file = fopen("json.php", "a") or die("Unable to open file!");
-  // $sinhvien = array("hoten"=>$_POST["hoten"], "mssv"=>$_POST["mssv"], "ngaysinh"=>$_POST["ngaysinh"]);
-  
-  // fwrite($file,json_encode($sinhvien)."\n");
-  // fclose($file);
-  
-    $file = file_get_contents('sinhvien.json');
-    $data = json_decode($file, true);
-    $data["sinhvien"] = array_values($data["sinhvien"]);
-    $sinhvien = array("hoten"=>$_POST["hoten"], "mssv"=>$_POST["mssv"], "ngaysinh"=>$_POST["ngaysinh"]);
-    array_push($data["sinhvien"], $sinhvien);
-    file_put_contents("sinhvien.json", json_encode($data));
-
-
-
-
-}
-function filexml(){
-  $loadxml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
-    $i = -1;
-    foreach($loadxml->children() as $sv) {
-    $i ++;
-    }
-    foreach($loadxml->children() as $sv) {
-      if($sv["id"] == $i){
-        $i++;
+            }
+        }
       }
-       
-    
-
+      echo "</tr>";
     }
-    
-  // echo $sinhvien = $xpath->query('/sinhvien/ttsv[id]')->item($i);
-  // $sv['id'] = $i;
-  // $xml = new DomDocument();
-  // $xml->preserveWhitespace = false;
-  // $xml->load('sinhvien.xml');
-  // $xpath = new DOMXPath($xml);
-  // $sinhvien = $xpath->query('/sinhvien/ttsv')->item($i-1);
-
-  // $ttsv =$xml->createElement("ttsv");
-  // $sinhvien->appendChild($ttsv);
-
-  // $name =$xml->createElement("hoten",$_POST["hoten"]);
-  // $ttsv->appendChild($name);
-
-  // $mssv =$xml->createElement("mssv",$_POST["mssv"]);
-  // $ttsv->appendChild($mssv);
-
-  // $ngaysinh =$xml->createElement("ngaysinh",$_POST["ngaysinh"]);
-  // $ttsv->appendChild($ngaysinh);
-
-
-  // $sinhvien->parentNode->insertBefore($ttsv, $sinhvien->nextSibling);
-  // $xml->save("sinhvien.xml");
-
-
   
-    $products = simplexml_load_file('sinhvien.xml');
-    $product = $products->addChild('ttsv');
-    $product->addAttribute('id',$i);
-    $product->addChild('hoten', $_POST['hoten']);
-    $product->addChild('mssv', $_POST['mssv']);
-    $product->addChild('ngaysinh', $_POST['ngaysinh']);
-    file_put_contents('sinhvien.xml', $products->asXML());
-
+  }
+  echo "</tbody>";
+  
+  
 }
+
+// class filejson extends sinhvien{
+//   function create(){
+//     $file = file_get_contents('sinhvien.json');
+//     $data = json_decode($file, true);
+//     $data["sinhvien"] = array_values($data["sinhvien"]);
+//     foreach($data["sinhvien"] as $key => $value ) {
+//       if($this->get_mssv() == $value["mssv"]){
+//            echo "Trùng mã sinh viên!";
+//            return 0; 
+//         }       
+//     }
+//     $this->chain = array("hoten"=>$this->get_hoten(), "mssv"=>$this->get_mssv(), "ngaysinh"=>$this->get_ngaysinh());
+//     array_push($data["sinhvien"], $this->chain);
+//     file_put_contents("sinhvien.json", json_encode($data));
+//     header("location: index.php");
+  
+//   }
+// }
+
+// class filexml extends sinhvien{
+//   function create(){
+//     $loadxml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
+//     foreach($loadxml->children() as $sv ) {
+//       if($sv->mssv == $this->get_mssv()){
+//         echo "Trùng mã sinh viên!";
+//         return 0;
+//       }
+//     }
+//     $i = 0;
+//     foreach($loadxml->children() as $sv) {
+//     $i ++;
+//     }
+//     foreach($loadxml->children() as $sv) {
+//       if($sv["id"] == $i){
+//         $i++;
+//       }
+//     }
+//     $products = simplexml_load_file('sinhvien.xml');
+//     $product = $products->addChild('ttsv');
+//     $product->addAttribute('id',$i);
+//     $product->addChild('hoten', $this->get_hoten());
+//     $product->addChild('mssv', $this->get_mssv());
+//     $product->addChild('ngaysinh', $this->get_ngaysinh());
+//     file_put_contents('sinhvien.xml', $products->asXML());
+//     header("location: index.php");
+//   }
+}
+
+
 
 
 ?>

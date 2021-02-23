@@ -1,3 +1,7 @@
+<?php
+  include 'handing.php';
+  session_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +15,10 @@
 </head>
 <body>
 <?php
+
+
 function loadtext($file){
+  
   $read = $file;
   echo "<tbody>";
   $name= "";
@@ -60,19 +67,6 @@ function loadtext($file){
   }
   echo "</tbody>";
 }
-function loadjson(){
-  $name ="";
-  $mssv = "";
-  $ngaysinh = "";
-  $read = file('json.php');
-    foreach ($read as $line) {
-    // echo $line ."<br> ";
-    $arr = json_decode($line, true);
-    echo $arr["hoten"]."<br>";
-    
-    }
-    
-}
 
 
 ?>
@@ -97,7 +91,8 @@ function loadjson(){
       </tr>
     </thead>
     <?php
-      loadtext(file('sinhvien.txt'));
+     $loadfile = new filetext("","","");
+     $loadfile->display(); 
     ?>
   </table>
   <p>file json</p>
@@ -142,7 +137,6 @@ function loadjson(){
   <tbody>
   <?php 
            $xml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
-           
            foreach($xml->children() as $sv ) {
 
             ?>
