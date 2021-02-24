@@ -1,3 +1,7 @@
+<?php
+  include 'handing.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,67 +14,13 @@
 </head>
 <body>
 <?php
-
 $id = (int)$_GET["id"];
 
+$read = file("sinhvien.txt");
+
 if(isset($_POST['luu'])) {
-
-$myfilew = fopen("sinhvien.txt", "w") or die("Unable to open file!");
-$file = $read;
-$sumid = -1;
-foreach($file as $sv){
-  $sumid ++;
-}
-if($id == 0){
-  $txt = "";
-  if(isset($_POST["hoten"])){
-    
-    $txt = $txt.$_POST["hoten"].", ";
-    
-  }
-  if(isset($_POST["mssv"])){
-    $txt = $txt.$_POST["mssv"].", ";
-    
-  }
-  if(isset($_POST["ngaysinh"])){
-    $txt = $txt.$_POST["ngaysinh"]."\n";
-  }
-  fwrite($myfilew, $txt);
-  fclose($myfilew);
-}else{
-  $head = "";
-  for($i = 0;$i<$id;$i++){
-    $head .= $file[$i];
-  }
-  fwrite($myfilew, $head);
-  fclose($myfilew);
-  $myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
-  
-  $txt = "";
-  if(isset($_POST["hoten"])){
-    
-    $txt = $txt.$_POST["hoten"].", ";
-    
-  }
-  if(isset($_POST["mssv"])){
-    $txt = $txt.$_POST["mssv"].", ";
-    
-  }
-  if(isset($_POST["ngaysinh"])){
-    $txt = $txt.$_POST["ngaysinh"]."\n";
-  }
-  fwrite($myfilea, $txt);
-  fclose($myfilea);
-
-}
-$myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
-$end = "";
-  for($i = $id+1;$i<=$sumid;$i++){
-    $end .= $file[$i];
-  }
-  fwrite($myfilea, $end);
-  fclose($myfilea);
-	header('location:index.php');
+  $filetxt = new filetext($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
+  $filetxt->update($id,$read);
 }
 
 $hoten = "";

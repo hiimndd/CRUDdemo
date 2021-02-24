@@ -1,5 +1,5 @@
 <?php
-  include 'handing.php';
+  
   session_start();
 ?>
 
@@ -17,9 +17,9 @@
 <?php
 
 
-function loadtext($file){
+function loadtext(){
   
-  $read = $file;
+  $read = file('sinhvien.txt');
   echo "<tbody>";
   $name= "";
   $mssv ="";
@@ -91,8 +91,7 @@ function loadtext($file){
       </tr>
     </thead>
     <?php
-     $loadfile = new filetext("","","");
-     $loadfile->display(); 
+      loadtext();
     ?>
   </table>
   <p>file json</p>

@@ -5,8 +5,7 @@ abstract class sinhvien {
     public $ngaysinh;
     public $chain ;
     abstract function create();
-    abstract function display();
-    // abstract function update();
+    abstract function update($id);
     // abstract function delete();
     
     function __construct($hoten,$mssv,$ngaysinh) {
@@ -67,86 +66,112 @@ class filetext extends sinhvien{
       }
     }
     }
-  $this->chain .= $this->get_hoten().", ";
-  $this->chain .= $this->get_mssv().", ";
-  $this->chain .= $this->get_ngaysinh()."\n";
-  fwrite($myfile, $this->chain);
-  fclose($myfile);
-  header("location: index.php");
+    $this->chain .= $this->get_hoten().", ";
+    $this->chain .= $this->get_mssv().", ";
+    $this->chain .= $this->get_ngaysinh()."\n";
+    fwrite($myfile, $this->chain);
+    fclose($myfile);
+    header("location: index.php");
   }
-  function display(){
-    
-  
-      $read = file('sinhvien.txt');
-      echo "<tbody>";
-  $name= "";
-  $mssv ="";
-  $ngaysinh = "";
-  $id = 0;
-    foreach ($read as $line) {
-      for($i = 0 ; $i < strlen($line); $i++){
-        echo "<tr>";
-        if($line[$i] === ","){
-          $vitri1 = $i-1 ;
-          echo "<td>";
-          for($i = 0;$i <= $vitri1; $i++ ){
-            $name = $line[$i];
-            echo $name;
-          }
-          echo "</td>";
-          echo "<td>";
-          for($i = $vitri1+2;$i < strlen($line) ; $i++ ){
-            if($line[$i] === ","){
-              $vitri2 = $i ;
-              for($i = $vitri1+2;$i < $vitri2; $i++ ){
-                $mssv = $line[$i];
-                echo $mssv;
-              }
-              echo "</td>";
-              echo "<td>";
-              for($i = $vitri2+2;$i < strlen($line); $i++ ){
-                $ngaysinh = $line[$i];
-                echo $ngaysinh;
-              }
-              
-              echo "</td>";
-              $index = $id ++;
-              echo "<td>";
-              
-              echo "<a href = '"."edittext.php?id=".$index."'><button type='"."button"."' class='"."btn btn-primary"."'>"."sửa"."</button><a> </a>";
-              echo "<a href = '"."deletetext.php?id=".$index."'><button type='"."button"."' class='"."btn btn-primary"."'>"."xóa"."</button><a> </a>";
 
-
-            }
-        }
-      }
-      echo "</tr>";
+  function update($id){
+    $read = file('sinhvien.txt');
+    $myfilew = fopen("sinhvien.txt", "w") or die("Unable to open file!");
+    $file = $read;
+    $sumid = -1;
+    foreach($file as $sv){
+      $sumid ++;
     }
-  
-  }
-  echo "</tbody>";
-  
-  
+    if($id == 0){
+      $txt = "";
+      if(null !== $this->get_hoten()){
+        
+        $txt = $txt.$this->get_hoten().", ";
+        
+      }
+      if(null !== $this->get_mssv()){
+        $txt = $txt.$this->get_mssv().", ";
+        
+      }
+      if(null !== $this->get_ngaysinh()){
+        $txt = $txt.$this->get_ngaysinh()."\n";
+      }
+      fwrite($myfilew, $txt);
+      fclose($myfilew);
+    }else{
+      $head = "";
+      for($i = 0;$i<$id;$i++){
+        $head .= $file[$i];
+      }
+      fwrite($myfilew, $head);
+      fclose($myfilew);
+      $myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
+      
+      $txt = "";
+      if(null !== $this->get_hoten()){
+        
+        $txt = $txt.$this->get_hoten().", ";
+        
+      }
+      if(null !== $this->get_mssv()){
+        $txt = $txt.$this->get_mssv().", ";
+        
+      }
+      if(null !== $this->get_ngaysinh()){
+        $txt = $txt.$this->get_ngaysinh()."\n";
+      }
+      fwrite($myfilea, $txt);
+      fclose($myfilea);
+
+    }
+    $myfilea = fopen("sinhvien.txt", "a") or die("Unable to open file!");
+    $end = "";
+      for($i = $id+1;$i<=$sumid;$i++){
+        $end .= $file[$i];
+      }
+      fwrite($myfilea, $end);
+      fclose($myfilea);
+      header('location:index.php');
+    
+
+      }
+
+
 }
 
-// class filejson extends sinhvien{
-//   function create(){
-//     $file = file_get_contents('sinhvien.json');
-//     $data = json_decode($file, true);
-//     $data["sinhvien"] = array_values($data["sinhvien"]);
-//     foreach($data["sinhvien"] as $key => $value ) {
-//       if($this->get_mssv() == $value["mssv"]){
-//            echo "Trùng mã sinh viên!";
-//            return 0; 
-//         }       
-//     }
-//     $this->chain = array("hoten"=>$this->get_hoten(), "mssv"=>$this->get_mssv(), "ngaysinh"=>$this->get_ngaysinh());
-//     array_push($data["sinhvien"], $this->chain);
-//     file_put_contents("sinhvien.json", json_encode($data));
-//     header("location: index.php");
-  
-//   }
-// }
+class filejson extends sinhvien{
+  function create(){
+    $file = file_get_contents('sinhvien.json');
+    $data = json_decode($file, true);
+    $data["sinhvien"] = array_values($data["sinhvien"]);
+    foreach($data["sinhvien"] as $key => $value ) {
+      if($this->get_mssv() == $value["mssv"]){
+           echo "Trùng mã sinh viên!";
+           return 0; 
+        }       
+    }
+    $id = 0;
+    foreach($data["sinhvien"] as $key => $value ) {
+      $id ++;  
+    }
+    foreach($data["sinhvien"] as $key => $value ) {
+      if($value["ID"] == $i){
+        $i++;
+      }  
+    }
+    $this->chain = array("ID"=>$id,"hoten"=>$this->get_hoten(), 
+    "mssv"=>$this->get_mssv(), 
+    "ngaysinh"=>$this->get_ngaysinh());
+    array_push($data["sinhvien"], $this->chain);
+    file_put_contents("sinhvien.json", json_encode($data));
+    header("location: index.php");
+  }
+  function update($id){
+    echo "noinhie";
+  }
+}
+
+
 
 // class filexml extends sinhvien{
 //   function create(){
@@ -175,7 +200,7 @@ class filetext extends sinhvien{
 //     file_put_contents('sinhvien.xml', $products->asXML());
 //     header("location: index.php");
 //   }
-}
+// }
 
 
 
