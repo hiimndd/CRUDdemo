@@ -150,7 +150,7 @@ class filejson extends sinhvien{
            return 0; 
         }       
     }
-    $id = 0;
+    $id = 1;
     foreach($data["sinhvien"] as $key => $value ) {
       $id ++;  
     }
@@ -159,48 +159,79 @@ class filejson extends sinhvien{
         $i++;
       }  
     }
-    $this->chain = array("ID"=>$id,"hoten"=>$this->get_hoten(), 
-    "mssv"=>$this->get_mssv(), 
-    "ngaysinh"=>$this->get_ngaysinh());
+    $this->chain = array(
+      'ID' => $id,
+      'hoten' => $this->get_hoten(), 
+      'mssv' => $this->get_mssv(), 
+      'ngaysinh' => $this->get_ngaysinh()
+      );
     array_push($data["sinhvien"], $this->chain);
-    file_put_contents("sinhvien.json", json_encode($data));
+    file_put_contents("sinhvien.json", json_encode($data, JSON_PRETTY_PRINT));
     header("location: index.php");
   }
   function update($id){
-    echo "noinhie";
+    $data = file_get_contents('sinhvien.json');
+    $data_array = json_decode($data, true);
+    $row = $data_array["sinhvien"][$id];
+    $this->chain = array(
+      'ID' => $row["ID"],
+			'hoten' => $this->get_hoten(),
+			'mssv' => $this->get_mssv(),
+			'ngaysinh' => $this->get_ngaysinh()
+			
+		);
+ 
+		$data_array["sinhvien"][$id] = $this->chain;
+ 
+		$data = json_encode($data_array, JSON_PRETTY_PRINT);
+		file_put_contents('sinhvien.json', $data);
+		header('location: index.php');
   }
 }
 
 
 
-// class filexml extends sinhvien{
-//   function create(){
-//     $loadxml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
-//     foreach($loadxml->children() as $sv ) {
-//       if($sv->mssv == $this->get_mssv()){
-//         echo "Trùng mã sinh viên!";
-//         return 0;
-//       }
-//     }
-//     $i = 0;
-//     foreach($loadxml->children() as $sv) {
-//     $i ++;
-//     }
-//     foreach($loadxml->children() as $sv) {
-//       if($sv["id"] == $i){
-//         $i++;
-//       }
-//     }
-//     $products = simplexml_load_file('sinhvien.xml');
-//     $product = $products->addChild('ttsv');
-//     $product->addAttribute('id',$i);
-//     $product->addChild('hoten', $this->get_hoten());
-//     $product->addChild('mssv', $this->get_mssv());
-//     $product->addChild('ngaysinh', $this->get_ngaysinh());
-//     file_put_contents('sinhvien.xml', $products->asXML());
-//     header("location: index.php");
-//   }
-// }
+class filexml extends sinhvien{
+  function create(){
+    $loadxml=simplexml_load_file("sinhvien.xml") or die("Error: Cannot create object");
+    foreach($loadxml->children() as $sv ) {
+      if($sv->mssv == $this->get_mssv()){
+        echo "Trùng mã sinh viên!";
+        return 0;
+      }
+    }
+    $i = 0;
+    foreach($loadxml->children() as $sv) {
+    $i ++;
+    }
+    foreach($loadxml->children() as $sv) {
+      if($sv["id"] == $i){
+        $i++;
+      }
+    }
+    $products = simplexml_load_file('sinhvien.xml');
+    $product = $products->addChild('ttsv');
+    $product->addAttribute('id',$i);
+    $product->addChild('hoten', $this->get_hoten());
+    $product->addChild('mssv', $this->get_mssv());
+    $product->addChild('ngaysinh', $this->get_ngaysinh());
+    file_put_contents('sinhvien.xml', $products->asXML());
+    header("location: index.php");
+  }
+  function update($id){
+    $products = simplexml_load_file('sinhvien.xml');
+    foreach($products->ttsv as $sv){
+      if($sv['id']==$id){
+        $sv->hoten = $this->get_hoten();
+        $sv->mssv = $this->get_mssv();
+        $sv->ngaysinh = $this->get_ngaysinh();
+        break;
+      }
+    }
+    file_put_contents('sinhvien.xml', $products->asXML());
+    header('location:index.php');
+  }
+}
 
 
 

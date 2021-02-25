@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     if ($jsonfile) {
         unset($all["sinhvien"][$id]);
         $all["sinhvien"] = array_values($all["sinhvien"]);
-        file_put_contents("sinhvien.json", json_encode($all));
+        file_put_contents("sinhvien.json", json_encode($all, JSON_PRETTY_PRINT));
     }
     header("Location: index.php");
 }

@@ -1,6 +1,4 @@
 <?php 
-
-
 if(isset($_GET['id'])) {
     
     $read = file('sinhvien.txt');
@@ -16,5 +14,4 @@ if(isset($_GET['id'])) {
     fwrite($myfilew, $fsinhvien);
     fclose($myfilew);
     header("Location: index.php");
-
 }

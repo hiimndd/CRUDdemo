@@ -20,7 +20,7 @@ $read = file("sinhvien.txt");
 
 if(isset($_POST['luu'])) {
   $filetxt = new filetext($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
-  $filetxt->update($id,$read);
+  $filetxt->update($id);
 }
 
 $hoten = "";

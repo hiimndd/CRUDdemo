@@ -1,4 +1,6 @@
-
+<?php
+  include 'handing.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,17 +18,9 @@ $products = simplexml_load_file('sinhvien.xml');
 
 
 if(isset($_POST['luu'])) {
-
-	foreach($products->ttsv as $sv){
-		if($sv['id']==$_POST['id']){
-			$sv->hoten = $_POST['hoten'];
-      $sv->mssv = $_POST['mssv'];
-      $sv->ngaysinh = $_POST['ngaysinh'];
-			break;
-		}
-	}
-	file_put_contents('sinhvien.xml', $products->asXML());
-	header('location:index.php');
+  $id = (int)$_POST['id'];
+  $filexml = new filexml($_POST["hoten"],$_POST["mssv"],$_POST["ngaysinh"]);
+  $filexml->update($id);
 }
 
 

@@ -1,1 +1,46 @@
-{"sinhvien":[{"ID":1,"hoten":"Nguy\u1ec5n Ti\u1ebfn \u0110\u1ea1t","mssv":"17552480201008","ngaysinh":"2021-02-06"},{"hoten":"SonGoKu","mssv":"17552480201009","ngaysinh":"2021-02-28"},{"ID":5,"hoten":"vegeta","mssv":"17552480201007","ngaysinh":"2021-02-28"},{"hoten":"T\u00e2m biu","mssv":"2165468","ngaysinh":"2021-02-12"},{"hoten":"SonGoKu","mssv":"1231237","ngaysinh":"2021-02-16"},{"ID":4,"hoten":"Nguy\u1ec5n D\u0169ng","mssv":"12312312","ngaysinh":"2021-02-27"},{"ID":6,"hoten":"B\u1ea3o L\u1ed9c","mssv":"036543125","ngaysinh":"2021-02-19"},{"ID":7,"hoten":"Hoang ha","mssv":"036546","ngaysinh":"2021-02-21"}]}
+{
+    "sinhvien": [
+        {
+            "ID": "1",
+            "hoten": "Nguy\u1ec5n Ti\u1ebfn \u0110\u1ea1t",
+            "mssv": "17552480201008",
+            "ngaysinh": "2021-02-06"
+        },
+        {
+            "ID": "2",
+            "hoten": "SonGoKu",
+            "mssv": "17552480201009",
+            "ngaysinh": "2021-02-28"
+        },
+        {
+            "ID": "3",
+            "hoten": "vegeta",
+            "mssv": "17552480201007",
+            "ngaysinh": "2021-02-28"
+        },
+        {
+            "ID": "4",
+            "hoten": "T\u00e2m biu",
+            "mssv": "2165468",
+            "ngaysinh": "2021-02-12"
+        },
+        {
+            "ID": "5",
+            "hoten": "SonGoKu",
+            "mssv": "1231237",
+            "ngaysinh": "2021-02-16"
+        },
+        {
+            "ID": "7",
+            "hoten": "Nguy\u1ec5n D\u0169ng",
+            "mssv": "12312312",
+            "ngaysinh": "2021-02-27"
+        },
+        {
+            "ID": "6",
+            "hoten": "B\u1ea3o L\u1ed9c",
+            "mssv": "036543125",
+            "ngaysinh": "2021-02-19"
+        }
+    ]
+}
